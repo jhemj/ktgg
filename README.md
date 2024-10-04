@@ -17,8 +17,7 @@ cd /bin
 ./kafka-console-consumer --bootstrap-server localhost:9092 --topic
 ```
 
-
-## 커밋규칙 
+## 커밋규칙 
 - feat: 새로운 기능 추가
 - fix: 버그 수정
 - docs: 문서 변경 (예: README 수정)
