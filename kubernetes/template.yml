@@ -1,0 +1,285 @@
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: project
+  labels:
+    app: project
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: project
+  template:
+    metadata:
+      labels:
+        app: project
+    spec:
+      containers:
+        - name: project
+          image: username/project:latest
+          ports:
+            - containerPort: 8080
+          readinessProbe:
+            httpGet:
+              path: '/actuator/health'
+              port: 8080
+            initialDelaySeconds: 10
+            timeoutSeconds: 2
+            periodSeconds: 5
+            failureThreshold: 10
+          livenessProbe:
+            httpGet:
+              path: '/actuator/health'
+              port: 8080
+            initialDelaySeconds: 120
+            timeoutSeconds: 2
+            periodSeconds: 5
+            failureThreshold: 5
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: interest
+  labels:
+    app: interest
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: interest
+  template:
+    metadata:
+      labels:
+        app: interest
+    spec:
+      containers:
+        - name: interest
+          image: username/interest:latest
+          ports:
+            - containerPort: 8080
+          readinessProbe:
+            httpGet:
+              path: '/actuator/health'
+              port: 8080
+            initialDelaySeconds: 10
+            timeoutSeconds: 2
+            periodSeconds: 5
+            failureThreshold: 10
+          livenessProbe:
+            httpGet:
+              path: '/actuator/health'
+              port: 8080
+            initialDelaySeconds: 120
+            timeoutSeconds: 2
+            periodSeconds: 5
+            failureThreshold: 5
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: consultation
+  labels:
+    app: consultation
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: consultation
+  template:
+    metadata:
+      labels:
+        app: consultation
+    spec:
+      containers:
+        - name: consultation
+          image: username/consultation:latest
+          ports:
+            - containerPort: 8080
+          readinessProbe:
+            httpGet:
+              path: '/actuator/health'
+              port: 8080
+            initialDelaySeconds: 10
+            timeoutSeconds: 2
+            periodSeconds: 5
+            failureThreshold: 10
+          livenessProbe:
+            httpGet:
+              path: '/actuator/health'
+              port: 8080
+            initialDelaySeconds: 120
+            timeoutSeconds: 2
+            periodSeconds: 5
+            failureThreshold: 5
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: alarm
+  labels:
+    app: alarm
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: alarm
+  template:
+    metadata:
+      labels:
+        app: alarm
+    spec:
+      containers:
+        - name: alarm
+          image: username/alarm:latest
+          ports:
+            - containerPort: 8080
+          readinessProbe:
+            httpGet:
+              path: '/actuator/health'
+              port: 8080
+            initialDelaySeconds: 10
+            timeoutSeconds: 2
+            periodSeconds: 5
+            failureThreshold: 10
+          livenessProbe:
+            httpGet:
+              path: '/actuator/health'
+              port: 8080
+            initialDelaySeconds: 120
+            timeoutSeconds: 2
+            periodSeconds: 5
+            failureThreshold: 5
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: salesmanmatch
+  labels:
+    app: salesmanmatch
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: salesmanmatch
+  template:
+    metadata:
+      labels:
+        app: salesmanmatch
+    spec:
+      containers:
+        - name: salesmanmatch
+          image: username/salesmanmatch:latest
+          ports:
+            - containerPort: 8080
+          readinessProbe:
+            httpGet:
+              path: '/actuator/health'
+              port: 8080
+            initialDelaySeconds: 10
+            timeoutSeconds: 2
+            periodSeconds: 5
+            failureThreshold: 10
+          livenessProbe:
+            httpGet:
+              path: '/actuator/health'
+              port: 8080
+            initialDelaySeconds: 120
+            timeoutSeconds: 2
+            periodSeconds: 5
+            failureThreshold: 5
+
+
+---
+
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: project
+  labels:
+    app: project
+spec:
+  ports:
+    - port: 8080
+      targetPort: 8080
+  selector:
+    app: project
+
+
+---
+
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: interest
+  labels:
+    app: interest
+spec:
+  ports:
+    - port: 8080
+      targetPort: 8080
+  selector:
+    app: interest
+
+
+---
+
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: consultation
+  labels:
+    app: consultation
+spec:
+  ports:
+    - port: 8080
+      targetPort: 8080
+  selector:
+    app: consultation
+
+
+---
+
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: alarm
+  labels:
+    app: alarm
+spec:
+  ports:
+    - port: 8080
+      targetPort: 8080
+  selector:
+    app: alarm
+
+
+---
+
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: salesmanmatch
+  labels:
+    app: salesmanmatch
+spec:
+  ports:
+    - port: 8080
+      targetPort: 8080
+  selector:
+    app: salesmanmatch
+

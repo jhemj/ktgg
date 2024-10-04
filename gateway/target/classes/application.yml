@@ -1,0 +1,92 @@
+server:
+  port: 8088
+
+---
+
+spring:
+  profiles: default
+  cloud:
+    gateway:
+#<<< API Gateway / Routes
+      routes:
+        - id: project
+          uri: http://localhost:8082
+          predicates:
+            - Path=/projects/**, 
+        - id: interest
+          uri: http://localhost:8083
+          predicates:
+            - Path=/interests/**, 
+        - id: consultation
+          uri: http://localhost:8084
+          predicates:
+            - Path=/consultations/**, 
+        - id: alarm
+          uri: http://localhost:8085
+          predicates:
+            - Path=/alarms/**, 
+        - id: salesmanmatch
+          uri: http://localhost:8086
+          predicates:
+            - Path=/salesmanMatches/**, 
+        - id: frontend
+          uri: http://localhost:8080
+          predicates:
+            - Path=/**
+#>>> API Gateway / Routes
+      globalcors:
+        corsConfigurations:
+          '[/**]':
+            allowedOrigins:
+              - "*"
+            allowedMethods:
+              - "*"
+            allowedHeaders:
+              - "*"
+            allowCredentials: true
+
+
+---
+
+spring:
+  profiles: docker
+  cloud:
+    gateway:
+      routes:
+        - id: project
+          uri: http://project:8080
+          predicates:
+            - Path=/projects/**, 
+        - id: interest
+          uri: http://interest:8080
+          predicates:
+            - Path=/interests/**, 
+        - id: consultation
+          uri: http://consultation:8080
+          predicates:
+            - Path=/consultations/**, 
+        - id: alarm
+          uri: http://alarm:8080
+          predicates:
+            - Path=/alarms/**, 
+        - id: salesmanmatch
+          uri: http://salesmanmatch:8080
+          predicates:
+            - Path=/salesmanMatches/**, 
+        - id: frontend
+          uri: http://frontend:8080
+          predicates:
+            - Path=/**
+      globalcors:
+        corsConfigurations:
+          '[/**]':
+            allowedOrigins:
+              - "*"
+            allowedMethods:
+              - "*"
+            allowedHeaders:
+              - "*"
+            allowCredentials: true
+
+server:
+  port: 8080
