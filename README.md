@@ -30,10 +30,15 @@ cd /bin
 ### 예시
 
 ```
+git commit -m "feat: add auth fundtion"
+
+메세지 들어가는 예시 :
+
 feat: 사용자 인증 기능 추가
 fix: 사용자 생성 시 500 에러 수정
 docs: API 사용 예제 업데이트
 refactor: 메소드 재구성으로 가독성 향상
+
 ```
 
 ## Run the backend micro-services
