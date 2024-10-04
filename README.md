@@ -17,6 +17,30 @@ cd /bin
 ./kafka-console-consumer --bootstrap-server localhost:9092 --topic
 ```
 
+## 커밋규칙 
+- feat: 새로운 기능 추가
+- fix: 버그 수정
+- docs: 문서 변경 (예: README 수정)
+- style: 코드 포맷팅, 세미콜론 누락 등 코드 의미에 영향을 주지 않는 변경
+- refactor: 리팩토링, 코드 수정이지만 기능 변화는 없는 경우
+- test: 테스트 코드 추가 또는 수정
+- chore: 빌드 프로세스, 패키지 매니저 설정 등의 수정
+- perf: 성능을 개선하기 위한 코드 변경
+
+### 예시
+
+```
+git commit -m "feat: add auth fundtion"
+
+메세지 들어가는 예시 :
+
+feat: 사용자 인증 기능 추가
+fix: 사용자 생성 시 500 에러 수정
+docs: API 사용 예제 업데이트
+refactor: 메소드 재구성으로 가독성 향상
+
+```
+
 ## Run the backend micro-services
 See the README.md files inside the each microservices directory:
 
@@ -94,4 +118,7 @@ sudo ./aws/install
 curl --silent --location "https://github.com/weaveworks/eksctl/releases/latest/download/eksctl_$(uname -s)_amd64.tar.gz" | tar xz -C /tmp
 sudo mv /tmp/eksctl /usr/local/bin
 ```
+
+
+
 
