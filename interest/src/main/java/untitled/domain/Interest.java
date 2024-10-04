@@ -35,6 +35,9 @@ public class Interest {
     public void onPostPersist() {
         InterestUpdated interestUpdated = new InterestUpdated(this);
         interestUpdated.publishAfterCommit();
+        
+
+        System.out.println("오예성의 수정");
 
         InterestCreated interestCreated = new InterestCreated(this);
         interestCreated.publishAfterCommit();
