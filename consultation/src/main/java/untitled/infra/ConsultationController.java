@@ -55,5 +55,12 @@ public class ConsultationController {
         }
     }
 
+    // 새로운 Consultation 생성 (추가된 POST 메서드)
+    @PostMapping
+    public ResponseEntity<Consultation> createConsultation(@RequestBody Consultation consultation) {
+        Consultation savedConsultation = consultationRepository.save(consultation);
+        return ResponseEntity.ok(savedConsultation);
+    }
+
     // 기존의 생성, 수정, 진행 단계 변경 메서드는 그대로 유지합니다.
 }
