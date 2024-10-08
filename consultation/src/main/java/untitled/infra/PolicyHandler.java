@@ -15,23 +15,12 @@ import untitled.domain.SalesmanMatched;
 @Transactional
 public class PolicyHandler {
 
-    @Autowired
-    ConsultationRepository consultationRepository;
-
-    private final ObjectMapper objectMapper = new ObjectMapper();
-
-    @StreamListener(KafkaProcessor.INPUT)
-    public void onEvent(@Payload String message) {
-        try {
-            AbstractEvent event = objectMapper.readValue(message, AbstractEvent.class);
-
-            if ("SalesmanMatched".equals(event.getEventType())) {
-                SalesmanMatched salesmanMatched = objectMapper.readValue(message, SalesmanMatched.class);
-                System.out.println("\n\n##### listener editSalesman : " + salesmanMatched + "\n\n");
-                Consultation.editSalesman(salesmanMatched);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+    @StreamListener(
+        value = KafkaProcessor.INPUT,
+        condition = "headers['type']=='SalesmanMatched'"
+    )
+    public void wheneverSalesmanMatched(@Payload SalesmanMatched salesmanMatched) {
+        System.out.println("##### listener editSalesman : " + salesmanMatched);
+        Consultation.editSalesman(salesmanMatched);
     }
 }

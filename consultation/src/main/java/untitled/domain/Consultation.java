@@ -53,7 +53,7 @@ public class Consultation {
     public static void editSalesman(SalesmanMatched salesmanMatched) {
         if (salesmanMatched.getSourceType() == SourceType.CONSULTATION_CREATED) {
             repository().findById(salesmanMatched.getOriginId()).ifPresent(consultation -> {
-                consultation.setMatchedsalesman(salesmanMatched.getMatchedSalesman());
+                consultation.setMatchedsalesman(salesmanMatched.getMatchedsalesman());
                 repository().save(consultation);
 
                 ConsultationUpdated consultationUpdated = new ConsultationUpdated(consultation);
