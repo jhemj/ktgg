@@ -1,23 +1,57 @@
 package untitled.infra;
 
-import java.util.Optional;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-import untitled.domain.*;
+import untitled.domain.Interest;
+import untitled.domain.InterestRepository;
 
-//<<< Clean Arch / Inbound Adaptor
+import java.util.List;
+import java.util.Optional;
 
 @RestController
-// @RequestMapping(value="/interests")
-@Transactional
+@RequestMapping("/interests")
 public class InterestController {
 
     @Autowired
-    InterestRepository interestRepository;
+    private InterestRepository interestRepository;
+
+    // 모든 Interest 조회
+    @GetMapping
+    public ResponseEntity<List<Interest>> getAllInterests() {
+        List<Interest> interests = (List<Interest>) interestRepository.findAll();
+        return ResponseEntity.ok(interests);
+    }
+
+    // phone으로 Interest 조회
+    @GetMapping(params = "phone")
+    public ResponseEntity<List<Interest>> getInterestsByPhone(@RequestParam String phone) {
+        List<Interest> interests = interestRepository.findByPhone(phone);
+        return ResponseEntity.ok(interests);
+    }
+
+    // matchedsalesman으로 Interest 조회
+    @GetMapping(params = "matchedsalesman")
+    public ResponseEntity<List<Interest>> getInterestsByMatchedSalesman(@RequestParam String matchedsalesman) {
+        List<Interest> interests = interestRepository.findByMatchedsalesman(matchedsalesman);
+        return ResponseEntity.ok(interests);
+    }
+
+    // projectname으로 Interest 조회
+    @GetMapping(params = "projectname")
+    public ResponseEntity<List<Interest>> getInterestsByProjectName(@RequestParam String projectname) {
+        List<Interest> interests = interestRepository.findByProjectname(projectname);
+        return ResponseEntity.ok(interests);
+    }
+
+    // ID로 Interest 조회 (기존 기능)
+    @GetMapping("/{id}")
+    public ResponseEntity<Interest> getInterestById(@PathVariable Long id) {
+        Optional<Interest> interest = interestRepository.findById(id);
+        if (interest.isPresent()) {
+            return ResponseEntity.ok(interest.get());
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
 }
-//>>> Clean Arch / Inbound Adaptor

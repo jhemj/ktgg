@@ -1,8 +1,6 @@
 package untitled.domain;
 
-import java.time.LocalDate;
 import java.util.Date;
-import java.util.List;
 import javax.persistence.*;
 import lombok.Data;
 import untitled.InterestApplication;
@@ -12,7 +10,6 @@ import untitled.domain.InterestUpdated;
 @Entity
 @Table(name = "Interest_table")
 @Data
-//<<< DDD / Aggregate Root
 public class Interest {
 
     @Id
@@ -33,14 +30,18 @@ public class Interest {
 
     @PostPersist
     public void onPostPersist() {
-        InterestUpdated interestUpdated = new InterestUpdated(this);
-        interestUpdated.publishAfterCommit();
-        
-
-        System.out.println("오예성의 수정");
-
         InterestCreated interestCreated = new InterestCreated(this);
         interestCreated.publishAfterCommit();
+
+        System.out.println("InterestCreated 이벤트 발행");
+    }
+
+    @PostUpdate
+    public void onPostUpdate() {
+        InterestUpdated interestUpdated = new InterestUpdated(this);
+        interestUpdated.publishAfterCommit();
+
+        System.out.println("InterestUpdated 이벤트 발행");
     }
 
     public static InterestRepository repository() {
@@ -50,47 +51,19 @@ public class Interest {
         return interestRepository;
     }
 
-    public void updateInterest() {
-        //implement business logic here:
-
-        InterestUpdated interestUpdated = new InterestUpdated(this);
-        interestUpdated.publishAfterCommit();
-    }
-
-    public void createInterest() {
-        //implement business logic here:
-
-        InterestCreated interestCreated = new InterestCreated(this);
-        interestCreated.publishAfterCommit();
-    }
-
-    //<<< Clean Arch / Port Method
+    /**
+     * SalesmanMatched 이벤트를 처리하여 matchedsalesman 필드 업데이트
+     */
     public static void editSalesman(SalesmanMatched salesmanMatched) {
-        //implement business logic here:
+        if ("INTEREST_CREATED".equals(salesmanMatched.getSourceType())) {
+            // originId를 사용하여 Interest 엔티티를 조회합니다.
+            repository().findById(salesmanMatched.getOriginId()).ifPresent(interest -> {
+                interest.setMatchedsalesman(salesmanMatched.getMatchedsalesman());
+                repository().save(interest);
 
-        /** Example 1:  new item 
-        Interest interest = new Interest();
-        repository().save(interest);
-
-        InterestUpdated interestUpdated = new InterestUpdated(interest);
-        interestUpdated.publishAfterCommit();
-        */
-
-        /** Example 2:  finding and process
-        
-        repository().findById(salesmanMatched.get???()).ifPresent(interest->{
-            
-            interest // do something
-            repository().save(interest);
-
-            InterestUpdated interestUpdated = new InterestUpdated(interest);
-            interestUpdated.publishAfterCommit();
-
-         });
-        */
-
+                InterestUpdated interestUpdated = new InterestUpdated(interest);
+                interestUpdated.publishAfterCommit();
+            });
+        }
     }
-    //>>> Clean Arch / Port Method
-
 }
-//>>> DDD / Aggregate Root

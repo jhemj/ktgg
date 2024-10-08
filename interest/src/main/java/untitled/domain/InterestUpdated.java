@@ -21,6 +21,13 @@ public class InterestUpdated extends AbstractEvent {
 
     public InterestUpdated(Interest aggregate) {
         super(aggregate);
+        this.id = aggregate.getId();
+        this.projectname = aggregate.getProjectname();
+        this.date = aggregate.getDate();
+        this.phone = aggregate.getPhone();
+        this.customername = aggregate.getCustomername();
+        this.matchedsalesman = aggregate.getMatchedsalesman();
+        this.interest = aggregate.getInterest();
     }
 
     public InterestUpdated() {

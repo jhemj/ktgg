@@ -1,12 +1,13 @@
 package untitled.domain;
 
-import java.util.*;
+import java.util.Date;
+
 import lombok.*;
-import untitled.domain.*;
 import untitled.infra.AbstractEvent;
 
 @Data
 @ToString
+@NoArgsConstructor
 public class InterestCreated extends AbstractEvent {
 
     private Long id;
@@ -16,4 +17,8 @@ public class InterestCreated extends AbstractEvent {
     private String customername;
     private String matchedsalesman;
     private Boolean interest;
+
+    public InterestCreated(Object aggregate) {
+        super(aggregate);
+    }
 }
