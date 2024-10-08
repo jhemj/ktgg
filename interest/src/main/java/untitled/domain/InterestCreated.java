@@ -1,14 +1,13 @@
 package untitled.domain;
 
-import java.time.LocalDate;
-import java.util.*;
+import java.util.Date;
 import lombok.*;
-import untitled.domain.*;
+import untitled.domain.Interest;
 import untitled.infra.AbstractEvent;
 
-//<<< DDD / Domain Event
 @Data
 @ToString
+@NoArgsConstructor
 public class InterestCreated extends AbstractEvent {
 
     private Long id;
@@ -21,10 +20,12 @@ public class InterestCreated extends AbstractEvent {
 
     public InterestCreated(Interest aggregate) {
         super(aggregate);
-    }
-
-    public InterestCreated() {
-        super();
+        this.id = aggregate.getId();
+        this.projectname = aggregate.getProjectname();
+        this.date = aggregate.getDate();
+        this.phone = aggregate.getPhone();
+        this.customername = aggregate.getCustomername();
+        this.matchedsalesman = aggregate.getMatchedsalesman();
+        this.interest = aggregate.getInterest();
     }
 }
-//>>> DDD / Domain Event

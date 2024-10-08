@@ -1,58 +1,38 @@
 package untitled.infra;
 
-import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import javax.naming.NameParser;
-import javax.naming.NameParser;
-import javax.transaction.Transactional;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.stream.annotation.StreamListener;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import untitled.config.kafka.KafkaProcessor;
-import untitled.domain.*;
+import untitled.domain.ConsultationCreated;
+import untitled.domain.InterestCreated;
+import untitled.domain.SalesmanMatch;
 
-//<<< Clean Arch / Inbound Adaptor
 @Service
 @Transactional
 public class PolicyHandler {
 
-    @Autowired
-    SalesmanMatchRepository salesmanMatchRepository;
+    private final ObjectMapper objectMapper = new ObjectMapper();
 
     @StreamListener(KafkaProcessor.INPUT)
-    public void whatever(@Payload String eventString) {}
+    public void onEvent(@Payload String message) {
+        try {
+            // 공통 이벤트 클래스로 역직렬화
+            AbstractEvent event = objectMapper.readValue(message, AbstractEvent.class);
 
-    @StreamListener(
-        value = KafkaProcessor.INPUT,
-        condition = "headers['type']=='InterestCreated'"
-    )
-    public void wheneverInterestCreated_MatchSalesman(
-        @Payload InterestCreated interestCreated
-    ) {
-        InterestCreated event = interestCreated;
-        System.out.println(
-            "\n\n##### listener MatchSalesman : " + interestCreated + "\n\n"
-        );
-
-        // Sample Logic //
-        SalesmanMatch.matchSalesman(event);
-    }
-
-    @StreamListener(
-        value = KafkaProcessor.INPUT,
-        condition = "headers['type']=='ConsultationCreated'"
-    )
-    public void wheneverConsultationCreated_MatchSalesman(
-        @Payload ConsultationCreated consultationCreated
-    ) {
-        ConsultationCreated event = consultationCreated;
-        System.out.println(
-            "\n\n##### listener MatchSalesman : " + consultationCreated + "\n\n"
-        );
-
-        // Sample Logic //
-        SalesmanMatch.matchSalesman(event);
+            if ("InterestCreated".equals(event.getEventType())) {
+                InterestCreated interestCreated = objectMapper.readValue(message, InterestCreated.class);
+                System.out.println("\n\n##### listener MatchSalesman : " + interestCreated + "\n\n");
+                SalesmanMatch.matchSalesman(interestCreated);
+            } else if ("ConsultationCreated".equals(event.getEventType())) {
+                ConsultationCreated consultationCreated = objectMapper.readValue(message, ConsultationCreated.class);
+                System.out.println("\n\n##### listener MatchSalesman : " + consultationCreated + "\n\n");
+                SalesmanMatch.matchSalesman(consultationCreated);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }
-//>>> Clean Arch / Inbound Adaptor
