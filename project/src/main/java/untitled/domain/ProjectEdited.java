@@ -17,8 +17,8 @@ public class ProjectEdited extends AbstractEvent {
     private Double scale;
     private Long target;
     private String host;
-    private Long summary;
-    private Long link;
+    private String summary;
+    private String link;
     private Date startDate;
     private Date endDate;
     private Date expStartDate;

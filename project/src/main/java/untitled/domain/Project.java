@@ -1,9 +1,12 @@
 package untitled.domain;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import javax.persistence.*;
+import javax.transaction.Transactional;
+
 import lombok.Data;
 import untitled.ProjectApplication;
 import untitled.domain.ProjectCreated;
@@ -31,9 +34,9 @@ public class Project {
 
     private String host;
 
-    private Long summary;
+    private String summary;
 
-    private Long link;
+    private String link;
 
     private Date startDate;
 
@@ -69,32 +72,82 @@ public class Project {
         return projectRepository;
     }
 
-    public void createProject() {
-        //implement business logic here:
+    public ProjectCreated createProject(ProjectCreated request) {
+
+        this.setProjectname(request.getProjectname());
+        this.setYear(request.getYear());
+        this.setScale(request.getScale());
+        this.setTarget(request.getTarget());
+        this.setHost(request.getHost());
+        this.setSummary(request.getSummary());
+        this.setLink(request.getLink());
+        this.setStartDate(request.getStartDate());
+        this.setEndDate(request.getEndDate());
+        this.setExpStartDate(request.getExpStartDate());
 
         ProjectCreated projectCreated = new ProjectCreated(this);
         projectCreated.publishAfterCommit();
+
+        return projectCreated;
     }
 
-    public void startProject() {
-        //implement business logic here:
+    public ProjectStarted startProject(Long id, ProjectStarted request) {
 
-        ProjectStarted projectStarted = new ProjectStarted(this);
+        Project project = repository().findById(id).orElseThrow(() -> new EntityNotFoundException("Project not found with id: " + id));
+
+        project.setStartDate(request.getStartDate());
+
+        ProjectStarted projectStarted = new ProjectStarted(project);
         projectStarted.publishAfterCommit();
+
+        return projectStarted;
     }
 
-    public void endProject() {
-        //implement business logic here:
+    public ProjectEnded endProject(Long id, ProjectEnded request) {
+        
+        Project project = repository().findById(id).orElseThrow(() -> new EntityNotFoundException("Project not found with id: " + id));
 
-        ProjectEnded projectEnded = new ProjectEnded(this);
+        project.setEndDate(request.getEndDate());
+
+        ProjectEnded projectEnded = new ProjectEnded(project);
         projectEnded.publishAfterCommit();
+
+        return projectEnded;
+
     }
 
-    public void editProject() {
-        //implement business logic here:
+    public ProjectEdited editProject(Long id, ProjectEdited request) {
 
-        ProjectEdited projectEdited = new ProjectEdited(this);
+        Project project = repository().findById(id).orElseThrow(() -> new EntityNotFoundException("Project not found with id: " + id));
+
+        project.setProjectname(request.getProjectname());
+        project.setYear(request.getYear());
+        project.setScale(request.getScale());
+        project.setTarget(request.getTarget());
+        project.setHost(request.getHost());
+        project.setSummary(request.getSummary());
+        project.setLink(request.getLink());
+        project.setStartDate(request.getStartDate());
+        project.setEndDate(request.getEndDate());
+        project.setExpStartDate(request.getExpStartDate());
+
+        ProjectEdited projectEdited = new ProjectEdited(project);
         projectEdited.publishAfterCommit();
+
+        return projectEdited;
+    }
+
+    public ProjectGetAll getAllProject() {
+        Iterable<Project> iterableProjects = repository().findAll();
+        List<Project> projects = new ArrayList<>();
+        for (Project project : iterableProjects) {
+            projects.add(project);
+        }
+    
+        ProjectGetAll projectEdited = new ProjectGetAll(projects);
+        projectEdited.publishAfterCommit();
+
+        return projectEdited;
     }
 
     //<<< Clean Arch / Port Method
