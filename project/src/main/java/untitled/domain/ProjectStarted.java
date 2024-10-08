@@ -12,19 +12,16 @@ import untitled.infra.AbstractEvent;
 public class ProjectStarted extends AbstractEvent {
 
     private Long id;
-    private Long name;
+    private String projectname;
     private String year;
     private Double scale;
     private Long target;
-    private Long host;
-    private Long summary;
-    private Long link;
+    private String host;
+    private String summary;
+    private String link;
     private Date startDate;
     private Date endDate;
     private Date expStartDate;
-    private String projectname;
-    private String host;
-    private Long summary;
 
     public ProjectStarted(Project aggregate) {
         super(aggregate);
