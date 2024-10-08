@@ -11,7 +11,7 @@ public class SalesmanMatched extends AbstractEvent {
     private Long id;
     private Long originId;
     private String phone;
-    private String matchedSalesman;
+    private String matchedsalesman;
     private String sourceType; // 추가된 필드
 
     public SalesmanMatched(SalesmanMatch aggregate) {
@@ -19,7 +19,7 @@ public class SalesmanMatched extends AbstractEvent {
         this.id = aggregate.getId();
         this.originId = aggregate.getOriginId();
         this.phone = aggregate.getPhone();
-        this.matchedSalesman = aggregate.getMatchedSalesman();
+        this.matchedsalesman = aggregate.getMatchedsalesman();
         this.sourceType = aggregate.getSourceType(); // 설정
     }
 }

@@ -21,7 +21,7 @@ public class SalesmanMatch {
     private String phone;
 
     @Column(name = "matched_salesman", nullable = false)
-    private String matchedSalesman;
+    private String matchedsalesman;
 
     @Column(name = "source_type") // 추가된 필드
     private String sourceType;
@@ -45,7 +45,7 @@ public class SalesmanMatch {
 
         SalesmanMatch salesmanMatch = new SalesmanMatch();
         salesmanMatch.setPhone(phone);
-        salesmanMatch.setMatchedSalesman(matchedSalesman);
+        salesmanMatch.setMatchedsalesman(matchedSalesman);
         salesmanMatch.setOriginId(interestCreated.getId());
         salesmanMatch.setSourceType("InterestCreated"); // 이벤트 출처 설정
         repository().save(salesmanMatch);
@@ -57,7 +57,7 @@ public class SalesmanMatch {
 
         SalesmanMatch salesmanMatch = new SalesmanMatch();
         salesmanMatch.setPhone(phone);
-        salesmanMatch.setMatchedSalesman(matchedSalesman);
+        salesmanMatch.setMatchedsalesman(matchedSalesman);
         salesmanMatch.setOriginId(consultationCreated.getId());
         salesmanMatch.setSourceType("ConsultationCreated"); // 이벤트 출처 설정
         repository().save(salesmanMatch);

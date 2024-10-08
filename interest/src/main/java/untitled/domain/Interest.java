@@ -58,7 +58,7 @@ public class Interest {
         if ("INTEREST_CREATED".equals(salesmanMatched.getSourceType())) {
             // originId를 사용하여 Interest 엔티티를 조회합니다.
             repository().findById(salesmanMatched.getOriginId()).ifPresent(interest -> {
-                interest.setMatchedsalesman(salesmanMatched.getMatchedSalesman());
+                interest.setMatchedsalesman(salesmanMatched.getMatchedsalesman());
                 repository().save(interest);
 
                 InterestUpdated interestUpdated = new InterestUpdated(interest);

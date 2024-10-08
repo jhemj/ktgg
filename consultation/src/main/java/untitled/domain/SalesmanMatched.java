@@ -11,7 +11,7 @@ public class SalesmanMatched extends AbstractEvent {
     private Long id;
     private Long originId;
     private String phone;
-    private String matchedSalesman;
+    private String matchedsalesman;
     private SourceType sourceType;
 
     public SalesmanMatched(AbstractEvent aggregate) {
