@@ -31,8 +31,8 @@ public class ProjectController {
     }
 
     @GetMapping("")
-    ResponseEntity<ProjectGetAll> getAllProject() {
-        ProjectGetAll response = new Project().getAllProject();
+    ResponseEntity< List<Project>> getAllProject() {
+        List<Project> response = new Project().getAllProject();
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 

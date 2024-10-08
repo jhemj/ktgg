@@ -1,6 +1,5 @@
 package untitled.domain;
 
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -9,10 +8,6 @@ import javax.transaction.Transactional;
 
 import lombok.Data;
 import untitled.ProjectApplication;
-import untitled.domain.ProjectCreated;
-import untitled.domain.ProjectEdited;
-import untitled.domain.ProjectEnded;
-import untitled.domain.ProjectStarted;
 
 @Entity
 @Table(name = "Project_table")
@@ -137,18 +132,18 @@ public class Project {
         return projectEdited;
     }
 
-    public ProjectGetAll getAllProject() {
+    
+    @Transactional
+    public List<Project> getAllProject() {
         Iterable<Project> iterableProjects = repository().findAll();
         List<Project> projects = new ArrayList<>();
         for (Project project : iterableProjects) {
             projects.add(project);
         }
     
-        ProjectGetAll projectEdited = new ProjectGetAll(projects);
-        projectEdited.publishAfterCommit();
-
-        return projectEdited;
+        return projects; // List<Project>를 반환
     }
+    
 
     //<<< Clean Arch / Port Method
     public static void annualProjectCreate(ProjectEnded projectEnded) {

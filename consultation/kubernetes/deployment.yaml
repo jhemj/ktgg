@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: consultation
-          image: "username/consultation:latest"
+          image: "yeseong33/consultation:latest"
           ports:
             - containerPort: 8080
           readinessProbe:
