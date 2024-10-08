@@ -44,7 +44,7 @@ public class InterestController {
         return ResponseEntity.ok(interests);
     }
 
-    // ID로 Interest 조회 (기존 기능)
+    // ID로 Interest 조회
     @GetMapping("/{id}")
     public ResponseEntity<Interest> getInterestById(@PathVariable Long id) {
         Optional<Interest> interest = interestRepository.findById(id);
@@ -53,5 +53,12 @@ public class InterestController {
         } else {
             return ResponseEntity.notFound().build();
         }
+    }
+
+    // 새로운 Interest 생성 (추가된 POST 메서드)
+    @PostMapping
+    public ResponseEntity<Interest> createInterest(@RequestBody Interest interest) {
+        Interest savedInterest = interestRepository.save(interest);
+        return ResponseEntity.ok(savedInterest);
     }
 }
