@@ -7,7 +7,7 @@ import untitled.infra.AbstractEvent;
 @Data
 @ToString
 @NoArgsConstructor
-public class ConsultationCreated extends AbstractEvent {
+public class ConsultationUpdated extends AbstractEvent {
 
     private Long id;
     private String projectname;
@@ -18,7 +18,7 @@ public class ConsultationCreated extends AbstractEvent {
     private String memo;
     private String step;
 
-    public ConsultationCreated(Consultation aggregate) {
+    public ConsultationUpdated(Consultation aggregate) {
         super(aggregate);
         this.id = aggregate.getId();
         this.projectname = aggregate.getProjectname();
