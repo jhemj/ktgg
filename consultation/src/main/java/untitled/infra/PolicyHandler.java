@@ -1,42 +1,26 @@
 package untitled.infra;
 
-import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import javax.naming.NameParser;
-import javax.naming.NameParser;
-import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.stream.annotation.StreamListener;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import untitled.config.kafka.KafkaProcessor;
-import untitled.domain.*;
+import untitled.domain.Consultation;
+import untitled.domain.ConsultationRepository;
+import untitled.domain.SalesmanMatched;
 
-//<<< Clean Arch / Inbound Adaptor
 @Service
 @Transactional
 public class PolicyHandler {
-
-    @Autowired
-    ConsultationRepository consultationRepository;
-
-    @StreamListener(KafkaProcessor.INPUT)
-    public void whatever(@Payload String eventString) {}
 
     @StreamListener(
         value = KafkaProcessor.INPUT,
         condition = "headers['type']=='SalesmanMatched'"
     )
-    public void wheneverSalesmanMatched_EditSalesman(
-        @Payload SalesmanMatched salesmanMatched
-    ) {
-        SalesmanMatched event = salesmanMatched;
-        System.out.println(
-            "\n\n##### listener EditSalesman : " + salesmanMatched + "\n\n"
-        );
-
-        // Sample Logic //
-        Consultation.editSalesman(event);
+    public void wheneverSalesmanMatched(@Payload SalesmanMatched salesmanMatched) {
+        System.out.println("##### listener editSalesman : " + salesmanMatched);
+        Consultation.editSalesman(salesmanMatched);
     }
 }
-//>>> Clean Arch / Inbound Adaptor

@@ -30,21 +30,16 @@ spring:
       bindings:
         event-in:
           group: salesmanmatch
-#<<< EDA / Topic Name
-          destination: untitled
-#>>> EDA / Topic Name
+          destination: input-topic  # 수정된 부분: 입력 채널의 토픽을 'input-topic'으로 변경
           contentType: application/json
         event-out:
-#<<< EDA / Topic Name
-          destination: untitled
-#>>> EDA / Topic Name
+          destination: output-topic  # 수정된 부분: 출력 채널의 토픽을 'output-topic'으로 변경
           contentType: application/json
 
 logging:
   level:
     org.hibernate.type: trace
     org.springframework.cloud: debug
-
 
 server:
   port: 8086
@@ -75,10 +70,8 @@ spring:
       bindings:
         event-in:
           group: salesmanmatch
-          destination: untitled
+          destination: input-topic  # 수정된 부분: 입력 채널의 토픽을 'input-topic'으로 변경
           contentType: application/json
         event-out:
-          destination: untitled
+          destination: output-topic  # 수정된 부분: 출력 채널의 토픽을 'output-topic'으로 변경
           contentType: application/json
-
-

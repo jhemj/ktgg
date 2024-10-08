@@ -1,24 +1,25 @@
 package untitled.domain;
 
-import java.time.LocalDate;
-import java.util.*;
 import lombok.*;
-import untitled.domain.*;
 import untitled.infra.AbstractEvent;
 
-//<<< DDD / Domain Event
 @Data
 @ToString
+@NoArgsConstructor
 public class SalesmanMatched extends AbstractEvent {
 
     private Long id;
+    private Long originId;
+    private String phone;
+    private String matchedsalesman;
+    private String sourceType; // 추가된 필드
 
     public SalesmanMatched(SalesmanMatch aggregate) {
         super(aggregate);
-    }
-
-    public SalesmanMatched() {
-        super();
+        this.id = aggregate.getId();
+        this.originId = aggregate.getOriginId();
+        this.phone = aggregate.getPhone();
+        this.matchedsalesman = aggregate.getMatchedsalesman();
+        this.sourceType = aggregate.getSourceType(); // 설정
     }
 }
-//>>> DDD / Domain Event
