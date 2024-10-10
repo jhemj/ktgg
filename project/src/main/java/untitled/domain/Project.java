@@ -1,8 +1,11 @@
 package untitled.domain;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
+
 import javax.persistence.*;
 import javax.transaction.Transactional;
 
@@ -80,6 +83,8 @@ public class Project {
         this.setEndDate(request.getEndDate());
         this.setExpStartDate(request.getExpStartDate());
 
+        repository().save(this);
+
         ProjectCreated projectCreated = new ProjectCreated(this);
         projectCreated.publishAfterCommit();
 
@@ -142,6 +147,16 @@ public class Project {
         }
     
         return projects; // List<Project>를 반환
+    }
+
+    @Transactional
+    public List<Project> getOnGoingProject() {
+        Date today = new Date();
+        List<Project> ongoingProjects = ((Collection<Project>) repository().findAll()).stream()
+            .filter(p -> p.getStartDate().before(today) && 
+                        (p.getEndDate() == null || p.getEndDate().after(today)))
+            .collect(Collectors.toList());
+        return ongoingProjects; 
     }
     
 

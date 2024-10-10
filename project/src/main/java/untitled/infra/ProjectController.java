@@ -1,5 +1,6 @@
 package untitled.infra;
 
+import java.util.Date;
 import java.util.List;
 
 import javax.transaction.Transactional;
@@ -51,6 +52,12 @@ public class ProjectController {
     @PatchMapping("/{id}/edit")
     ResponseEntity<ProjectEdited> editProject(@Valid @PathVariable Long id, @Valid @RequestBody ProjectEdited request) {
         ProjectEdited response = new Project().editProject(id, request);
+        return ResponseEntity.status(HttpStatus.OK).body(response);
+    }
+
+    @GetMapping("/ongoing")
+    public ResponseEntity<List<Project>> getOngoingProjects() {
+        List<Project> response = new Project().getAllProject();
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 

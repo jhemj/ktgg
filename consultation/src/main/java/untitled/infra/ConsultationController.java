@@ -55,12 +55,40 @@ public class ConsultationController {
         }
     }
 
-    // 새로운 Consultation 생성 (추가된 POST 메서드)
+    // 새로운 Consultation 생성
     @PostMapping
     public ResponseEntity<Consultation> createConsultation(@RequestBody Consultation consultation) {
         Consultation savedConsultation = consultationRepository.save(consultation);
         return ResponseEntity.ok(savedConsultation);
     }
 
-    // 기존의 생성, 수정, 진행 단계 변경 메서드는 그대로 유지합니다.
+    // Consultation 수정
+    @PatchMapping("/{id}")
+    public ResponseEntity<Consultation> updateConsultation(@PathVariable Long id, @RequestBody Consultation updatedConsultation) {
+        Optional<Consultation> consultation = consultationRepository.findById(id);
+        if (consultation.isPresent()) {
+            Consultation existingConsultation = consultation.get();
+            existingConsultation.setConsultationdate(updatedConsultation.getConsultationdate());
+            existingConsultation.setMemo(updatedConsultation.getMemo());
+            existingConsultation.setStep(updatedConsultation.getStep());
+            Consultation savedConsultation = consultationRepository.save(existingConsultation);
+            return ResponseEntity.ok(savedConsultation);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    // Consultation 상태 변경 (단계별로)
+    @PatchMapping("/{id}/step")
+    public ResponseEntity<Consultation> updateConsultationStep(@PathVariable Long id, @RequestParam String step) {
+        Optional<Consultation> consultation = consultationRepository.findById(id);
+        if (consultation.isPresent()) {
+            Consultation existingConsultation = consultation.get();
+            existingConsultation.setStep(step);
+            Consultation savedConsultation = consultationRepository.save(existingConsultation);
+            return ResponseEntity.ok(savedConsultation);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
 }
