@@ -10,6 +10,7 @@ import javax.persistence.*;
 import javax.transaction.Transactional;
 
 import lombok.Data;
+import net.minidev.json.annotate.JsonIgnore;
 import untitled.ProjectApplication;
 
 @Entity
@@ -41,7 +42,7 @@ public class Project {
     private Date endDate;
 
     private Date expStartDate;
-
+    
     @PostPersist
     public void onPostPersist() {
         ProjectCreated projectCreated = new ProjectCreated(this);
@@ -70,25 +71,9 @@ public class Project {
         return projectRepository;
     }
 
-    public ProjectCreated createProject(ProjectCreated request) {
-
-        this.setProjectname(request.getProjectname());
-        this.setYear(request.getYear());
-        this.setScale(request.getScale());
-        this.setTarget(request.getTarget());
-        this.setHost(request.getHost());
-        this.setSummary(request.getSummary());
-        this.setLink(request.getLink());
-        this.setStartDate(request.getStartDate());
-        this.setEndDate(request.getEndDate());
-        this.setExpStartDate(request.getExpStartDate());
-
-        repository().save(this);
-
-        ProjectCreated projectCreated = new ProjectCreated(this);
-        projectCreated.publishAfterCommit();
-
-        return projectCreated;
+    public static Project createProject(Project project) {
+        repository().save(project);
+        return project;
     }
 
     public ProjectStarted startProject(Long id, ProjectStarted request) {
@@ -139,26 +124,16 @@ public class Project {
 
     
     @Transactional
-    public List<Project> getAllProject() {
+    public List<ProjectGetAll> getAllProject() {
         Iterable<Project> iterableProjects = repository().findAll();
-        List<Project> projects = new ArrayList<>();
+        List<ProjectGetAll> projects = new ArrayList<>();
         for (Project project : iterableProjects) {
-            projects.add(project);
+            ProjectGetAll item = new ProjectGetAll(project);
+            projects.add(item);
         }
     
         return projects; // List<Project>를 반환
     }
-
-    @Transactional
-    public List<Project> getOnGoingProject() {
-        Date today = new Date();
-        List<Project> ongoingProjects = ((Collection<Project>) repository().findAll()).stream()
-            .filter(p -> p.getStartDate().before(today) && 
-                        (p.getEndDate() == null || p.getEndDate().after(today)))
-            .collect(Collectors.toList());
-        return ongoingProjects; 
-    }
-    
 
     //<<< Clean Arch / Port Method
     public static void annualProjectCreate(ProjectEnded projectEnded) {

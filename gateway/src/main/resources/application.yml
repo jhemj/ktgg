@@ -21,10 +21,6 @@ spring:
           uri: http://localhost:8084
           predicates:
             - Path=/consultations/**, 
-        - id: alarm
-          uri: http://localhost:8085
-          predicates:
-            - Path=/alarms/**, 
         - id: salesmanmatch
           uri: http://localhost:8086
           predicates:
@@ -54,27 +50,23 @@ spring:
     gateway:
       routes:
         - id: project
-          uri: http://project:8080
+          uri: http://project:80
           predicates:
             - Path=/projects/**, 
         - id: interest
-          uri: http://interest:8080
+          uri: http://interest:80
           predicates:
             - Path=/interests/**, 
         - id: consultation
-          uri: http://consultation:8080
+          uri: http://consultation:80
           predicates:
             - Path=/consultations/**, 
-        - id: alarm
-          uri: http://alarm:8080
-          predicates:
-            - Path=/alarms/**, 
         - id: salesmanmatch
-          uri: http://salesmanmatch:8080
+          uri: http://salesmanmatch:80
           predicates:
             - Path=/salesmanMatches/**, 
         - id: frontend
-          uri: http://frontend:8080
+          uri: http://frontend:80
           predicates:
             - Path=/**
       globalcors:

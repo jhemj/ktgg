@@ -17,23 +17,15 @@ import untitled.domain.*;
 @Transactional
 public class ProjectController {
 
-    // @PostMapping("")
-    // ResponseEntity<ProjectCreated> createProject(@Valid @RequestBody ProjectCreated request) {
-    //     ProjectCreated response = projectService.createProject(request);
-    //     System.out.println("pased");
-    //     return ResponseEntity.status(HttpStatus.CREATED).body(response);
-    // }
-
     @PostMapping("")
-    public ResponseEntity<Project> createProject(@Valid @RequestBody ProjectCreated request) {
-        Project project = new Project();
-        project.createProject(request);
-        return ResponseEntity.status(HttpStatus.CREATED).body(project);
+    public ResponseEntity<Project> createProject(@Valid @RequestBody Project request) {
+        Project createdProject = Project.createProject(request);
+        return ResponseEntity.status(HttpStatus.CREATED).body(createdProject);
     }
-
-    @GetMapping("")
-    ResponseEntity< List<Project>> getAllProject() {
-        List<Project> response = new Project().getAllProject();
+    
+    @GetMapping("/all")
+    public ResponseEntity<List<ProjectGetAll>> getAllProjects() {
+        List<ProjectGetAll> response = new Project().getAllProject();
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 
@@ -56,8 +48,8 @@ public class ProjectController {
     }
 
     @GetMapping("/ongoing")
-    public ResponseEntity<List<Project>> getOngoingProjects() {
-        List<Project> response = new Project().getAllProject();
+    public ResponseEntity<List<ProjectGetAll>> getOngoingProjects() {
+        List<ProjectGetAll> response = new Project().getAllProject();
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 

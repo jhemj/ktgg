@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
         - name: project
-          image: "yeseong33/project:241008"
+          image: "yeseong33/project:241010"
           ports:
             - containerPort: 8080
           readinessProbe:
@@ -45,7 +45,7 @@ metadata:
   labels:
     app: interest
 spec:
-  replicas: 2
+  replicas: 1
   selector:
     matchLabels:
       app: interest
@@ -56,7 +56,7 @@ spec:
     spec:
       containers:
         - name: interest
-          image: yeseong33/interest:241008
+          image: yeseong33/interest:241010
           ports:
             - containerPort: 8080
           readinessProbe:
@@ -84,7 +84,7 @@ metadata:
   labels:
     app: consultation
 spec:
-  replicas: 2
+  replicas: 1
   selector:
     matchLabels:
       app: consultation
@@ -95,7 +95,7 @@ spec:
     spec:
       containers:
         - name: consultation
-          image: yeseong33/consultation:241008
+          image: yeseong33/consultation:241010
           ports:
             - containerPort: 8080
           readinessProbe:
@@ -119,11 +119,11 @@ spec:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: salesmanmatch
+  name: 
   labels:
     app: salesmanmatch
 spec:
-  replicas: 2
+  replicas: 1
   selector:
     matchLabels:
       app: salesmanmatch
@@ -134,7 +134,7 @@ spec:
     spec:
       containers:
         - name: salesmanmatch
-          image: yeseong33/salesmanmatch:241008
+          image: yeseong33/salesmanmatch:241010
           ports:
             - containerPort: 8080
           readinessProbe:
@@ -162,7 +162,7 @@ metadata:
   labels:
     app: project
 spec:
-  type: LoadBalancer  # 외부 접근을 위해 LoadBalancer 유형으로 변경
+  type: ClusterIP  # 외부 접근을 위해 LoadBalancer 유형으로 변경
   ports:
     - port: 80          # 외부 포트 80
       targetPort: 8080  # 내부 컨테이너 포트 8080
@@ -178,7 +178,7 @@ metadata:
   labels:
     app: interest
 spec:
-  type: LoadBalancer  # 외부 접근을 위해 LoadBalancer 유형으로 변경
+  type: ClusterIP  # 외부 접근을 위해 LoadBalancer 유형으로 변경
   ports:
     - port: 80
       targetPort: 8080
@@ -194,7 +194,7 @@ metadata:
   labels:
     app: consultation
 spec:
-  type: LoadBalancer  # 외부 접근을 위해 LoadBalancer 유형으로 변경
+  type: ClusterIP  # 외부 접근을 위해 LoadBalancer 유형으로 변경
   ports:
     - port: 80
       targetPort: 8080
@@ -217,3 +217,19 @@ spec:
       protocol: TCP
   selector:
     app: salesmanmatch
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: gateway
+  labels:
+    app: gateway
+spec:
+  type: LoadBalancer  # 내부 접근용 ClusterIP 유지
+  ports:
+    - port: 80
+      targetPort: 8080
+      protocol: TCP
+  selector:
+    app: gateway

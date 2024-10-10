@@ -21,8 +21,8 @@ public class ProjectCreated extends AbstractEvent {
     private String link;
     private Date startDate;
     private Date endDate;
-
     private Date expStartDate;
+    
     public ProjectCreated(Project aggregate) {
         super(aggregate);
     }
