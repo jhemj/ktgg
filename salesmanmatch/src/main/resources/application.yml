@@ -1,0 +1,80 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: salesmanmatch
+---
+
+spring:
+  profiles: default
+  jpa:
+    properties:
+      hibernate:
+        show_sql: true
+        format_sql: true
+        implicit_naming_strategy: org.hibernate.boot.model.naming.ImplicitNamingStrategyComponentPathImpl
+  cloud:
+    stream:
+      kafka:
+        binder:
+          brokers: localhost:9092
+        streams:
+          binder:
+            configuration:
+              default:
+                key:
+                  serde: org.apache.kafka.common.serialization.Serdes$StringSerde
+                value:
+                  serde: org.apache.kafka.common.serialization.Serdes$StringSerde
+      bindings:
+        event-in:
+          group: salesmanmatch
+#<<< EDA / Topic Name
+          destination: untitled
+#>>> EDA / Topic Name
+          contentType: application/json
+        event-out:
+#<<< EDA / Topic Name
+          destination: untitled
+#>>> EDA / Topic Name
+          contentType: application/json
+
+logging:
+  level:
+    org.hibernate.type: trace
+    org.springframework.cloud: debug
+
+
+server:
+  port: 8085
+
+---
+
+spring:
+  profiles: docker
+  jpa:
+    properties:
+      hibernate:
+        show_sql: true
+        format_sql: true
+        implicit_naming_strategy: org.hibernate.boot.model.naming.ImplicitNamingStrategyComponentPathImpl
+  cloud:
+    stream:
+      kafka:
+        binder:
+          brokers: my-kafka:9092
+          configuration:
+            spring.json.trusted.packages: '*'  # 모든 패키지 신뢰
+            key.serde: org.apache.kafka.common.serialization.Serdes$StringSerde
+            value.serde: org.springframework.kafka.support.serializer.JsonDeserializer  # JsonDeserializer로 변경
+      bindings:
+        event-in:
+          group: salesmanmatch
+          destination: untitled
+          contentType: application/json
+        event-out:
+          destination: untitled
+          contentType: application/json
+
+
