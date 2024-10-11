@@ -13,6 +13,7 @@ public class SalesmanMatched extends AbstractEvent {
     private String phone;
     private String matchedsalesman;
     private SourceType sourceType;
+    private Long consultationId; 
 
     public SalesmanMatched(AbstractEvent aggregate) {
         super(aggregate);
